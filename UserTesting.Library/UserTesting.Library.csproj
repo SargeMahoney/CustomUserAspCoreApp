@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\css\bootstrap-grid.css" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\css\bootstrap-grid.css.map" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\css\bootstrap-grid.min.css" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\css\bootstrap-grid.min.css.map" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\css\bootstrap-reboot.css" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\css\bootstrap-reboot.css.map" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\css\bootstrap-reboot.min.css" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\css\bootstrap-reboot.min.css.map" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\css\bootstrap.css" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\css\bootstrap.css.map" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\css\bootstrap.min.css" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\css\bootstrap.min.css.map" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\js\bootstrap.bundle.js" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\js\bootstrap.bundle.js.map" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\js\bootstrap.bundle.min.js" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\js\bootstrap.bundle.min.js.map" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\js\bootstrap.js" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\js\bootstrap.js.map" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\js\bootstrap.min.js" />
+    <Content Remove="C:\Users\AeM\.nuget\packages\bootstrap\4.6.0\contentFiles\any\any\wwwroot\js\bootstrap.min.js.map" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="bootstrap" Version="4.6.0" />
+    <PackageReference Include="FontAwesome" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\User\Pages\" />
+    <Folder Include="wwwroot\bootstrap\dist\js\" />
+    <Folder Include="wwwroot\font-awesome\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UserTesting.Application\UserTesting.Application.csproj" />
+    <ProjectReference Include="..\UserTesting.Domain\UserTesting.Domain.csproj" />
+  </ItemGroup>
+  
+
+
+</Project>

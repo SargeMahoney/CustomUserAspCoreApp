@@ -1,0 +1,112 @@
+﻿@implements IDisposable
+@using UserTesting.Domain.Models.UI 
+@inject UserTesting.Server.Services.User.IUserService _userService
+@inject UserTesting.Application.Contracts.Infrastructure.Messages.IMessageEvent _messageEvent
+@inject UserTesting.Application.Contracts.Persistence.Messages.IMessagesRepository _messageContext
+@inject AutoMapper.IMapper _mapper;
+@inject IToastService _toast
+@inject IJSRuntime _js
+@using Syncfusion.Blazor.Popups
+
+@using MediatR
+
+<div class="userNotifier">
+    <div class="notifier">
+        @if (CurrentUser.IsAuthenticated)
+        {
+            @CurrentUser.Messages.Count() <span>  <i class="fas fa-envelope"></i></span>
+        }
+
+    </div>
+    <div class="userButton" @onclick="UserClicked" @ref="prova">
+        @CurrentUser.UserName
+    </div>
+</div>
+
+<SfDialog CssClass="spDialog" Width="250px" Height="500px" @bind-Visible="show" ShowCloseIcon="true" CloseOnEscape="true">
+    <DialogEvents OnOverlayClick="@OverlayClick"></DialogEvents>
+    <DialogTemplates>
+        <Content> This is a Dialog with content </Content>
+    </DialogTemplates>
+    <DialogPositionData X="@X" Y="@Y"></DialogPositionData>
+</SfDialog>
+
+@code{
+    [CascadingParameter(Name = "CurrentUser")]
+    public ApplicationUser CurrentUser { get; set; } = new ApplicationUser();
+
+    public bool show { get; set; }
+
+
+    ElementReference prova;
+
+    private string ToastContent = "Nuovo Messaggio";
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        _userService.Event_UserLoggedIn += new EventHandler(Refresh);
+        _messageEvent.Event_MessageSent += new EventHandler(RefreshUser);
+    }
+
+    protected async void Refresh(object sender, EventArgs e)
+    {
+        await InvokeAsync(this.StateHasChanged);
+    }
+
+    protected async void RefreshUser(object sender, EventArgs e)
+    {
+        var messageReceived = sender as UserTesting.Domain.Models.Messages.MessageSetup;
+
+        if (CurrentUser.IsAuthenticated)
+        {
+
+            var messageResult = await _messageContext.ListAllAsync();
+            if (messageResult.Success)
+            {
+                CurrentUser.Messages = messageResult.GetData().Where(x => x.UserName == CurrentUser.UserName).ToList();
+            }
+
+            if (messageReceived.OfficesId.Contains(CurrentUser.OfficeId))
+            {
+                _toast.ShowSuccess(CurrentUser.Messages.First().MessageBody, CurrentUser.Messages.First().Title);
+            }
+
+            await InvokeAsync(this.StateHasChanged);
+        }
+
+    }
+
+    public string X { get; set; } = "0";
+    public string Y { get; set; } = "0";
+
+    public async void UserClicked(MouseEventArgs e)
+    {
+        var result = await _js.InvokeAsync<BoundingClientRect>("MyDOMGetBoundingClientRect", prova);
+
+        X = (result.X- 50).ToString();
+        Y = (result.Y + result.Top+  result.Height).ToString();
+     
+        this.StateHasChanged();
+        show = true;
+
+    }
+
+    private void OverlayClick(MouseEventArgs args)
+    {
+        show = false;
+    }
+
+    void IDisposable.Dispose()
+    {
+        _userService.Event_UserLoggedIn -= new EventHandler(Refresh);
+    }
+}
+
+<style>
+    .spDialog{
+        position:absolute!important;
+        z-index:9999!important;
+
+    }
+</style>

@@ -1,0 +1,70 @@
+﻿@inject UserTesting.Application.Contracts.Infrastructure.ViewModels.MessagesPage.IMessagesPage  _messagePageVM;
+@page "/messages"
+
+
+
+<h3>new message</h3>
+<hr />
+<div class="form-group row">
+    <label for="Title" class="col-sm-2 col-form-label">
+        Title
+    </label>
+    <div class="col-sm-10">
+        <SfTextBox ID="Title" Placeholder='Title' @bind-Value="_messagePageVM.MessageSetup.Title" FloatLabelType='@FloatLabelType.Auto'></SfTextBox>
+    </div>
+</div>
+<div class="form-group row">
+    <label for="MessageBody" class="col-sm-2 col-form-label">
+        MessageBody
+    </label>
+    <div class="col-sm-10">
+        <SfTextBox ID="MessageBody" Placeholder='MessageBody' @bind-Value="_messagePageVM.MessageSetup.MessageBody" FloatLabelType='@FloatLabelType.Auto'></SfTextBox>
+    </div>
+</div>
+<div class="form-group row">
+    <label for="email" class="col-sm-2 col-form-label">
+        Offices
+    </label>
+    <div class="col-sm-10">
+        <select class="form-control selectpicker" @bind="SelectedOfficeId">
+            <option>--select--</option>
+            @foreach (var item in _messagePageVM.Offices)
+            {
+                <option value="@item.Id">@item.Name</option>
+
+            }
+        </select>
+    </div>
+</div>
+<button class="btn btn-success" @onclick="FormSubmitted">Save</button>
+
+
+@code {
+
+
+
+
+
+
+
+
+    public Guid SelectedOfficeId { get; set; }
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        await _messagePageVM.LoadData();
+    }
+
+    async void FormSubmitted()
+    {
+        _messagePageVM.MessageSetup.OfficesId.Add(SelectedOfficeId);
+        var result = await _messagePageVM.SendMessage();
+        if (result.Success)
+        {
+            SelectedOfficeId = Guid.Empty;
+            this.StateHasChanged();
+        }
+
+    }
+}

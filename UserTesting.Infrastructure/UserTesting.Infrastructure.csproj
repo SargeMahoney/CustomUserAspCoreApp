@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UserTesting.Application\UserTesting.Application.csproj" />
+    <ProjectReference Include="..\UserTesting.Domain\UserTesting.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

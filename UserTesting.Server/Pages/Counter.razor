@@ -1,0 +1,59 @@
+﻿@page "/counter"
+
+
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<AuthorizeView>
+    <Authorized>
+        @if (CurrentUser.IsInRole("Standard"))
+        {
+            <h1>Hello, @context.User.Identity.Name!</h1>
+            <p>You are standard.</p>
+        }
+        else if (CurrentUser.IsInRole("SuperUser"))
+        {
+            <h1>Hello, @context.User.Identity.Name!</h1>
+            <p>You are superuser.</p>
+        }
+
+        @foreach (var message in CurrentUser.Messages)
+        {
+            <p>@message.Title @message.MessageBody @message.Date.ToShortDateString()</p>
+        }
+
+    </Authorized>
+    <NotAuthorized>
+        You're not logged in.
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private int currentCount = 0;
+
+    private async void IncrementCount()
+    {
+
+        if (CurrentUser.IsAuthenticated)
+        {
+
+            if (CurrentUser.IsInRole("SuperUser"))
+            {
+                currentCount++;
+            }
+        }
+
+
+    }
+
+
+
+    [CascadingParameter(Name = "CurrentUser")]
+    public ApplicationUser CurrentUser { get; set; } = new ApplicationUser();
+
+
+
+}

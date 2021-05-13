@@ -1,0 +1,39 @@
+﻿
+@inject UserTesting.Server.Services.User.IUserService _userService;
+
+@page "/"
+
+<AuthorizeView>
+    <Authorized>
+        @if (CurrentUser.IsInRole("SuperUser"))
+        {
+            <p>autorizzato super user</p>
+        }
+        else
+        {
+            <p>autorizzato standard</p>
+        }
+
+    </Authorized>
+    <NotAuthorized>
+        <p>Non Autorizzato</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code{
+
+    [CascadingParameter(Name = "CurrentUser")]
+    public ApplicationUser CurrentUser { get; set; }
+
+
+    public IEnumerable<ApplicationUser> Users { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        await _userService.LoggedIn();
+
+    }
+
+}

@@ -1,0 +1,48 @@
+﻿@inject UserManager<ApplicationUser> _userManager;
+@inject SignInManager<ApplicationUser> _signInManager;
+
+@page "/Register"
+<h3>Register</h3>
+<EditForm Model="newUser">
+    <div class="form-control">
+        <label>Name</label>
+        <InputText @bind-Value="Name"></InputText>
+    </div>
+    <div class="form-control">
+        <label>Username</label>
+        <InputText @bind-Value="Username"></InputText>
+    </div>
+    <div class="form-control">
+        <label>Password</label>
+        <InputText @bind-Value="Password"></InputText>
+    </div>
+</EditForm>
+<button type="button" class="btn btn-primary" @onclick="RegisterUser">Save</button>
+
+@code {
+
+    ApplicationUser newUser { get; set; } = new ApplicationUser();
+
+    public string Name { get; set; }
+    public string Username { get; set; }
+    public string Password { get; set; }
+
+    public async Task RegisterUser()
+    {
+
+
+        var user = new ApplicationUser { Name = Name, UserName = Username };
+        var result = await _userManager.CreateAsync(user, Password);
+        if (result.Succeeded)
+        {
+            // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
+            // Send an email with this link
+            //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+            //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
+            //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+            await _signInManager.SignInAsync(user, isPersistent: false);
+        }
+    }
+
+}

@@ -1,0 +1,39 @@
+﻿@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserTesting.Application.Contracts.Persistence.Users.IUsersRepository _users
+
+
+<div id="userNotifier">
+    <div class="notifier flex-cell">
+       <i class="">prova</i>
+    </div>
+    <div class="userButton flex-cell">
+        @CurrentUser.UserName
+    </div>
+</div>
+
+@code {
+
+    public ApplicationUser CurrentUser { get; set; } = new ApplicationUser();
+
+    protected async override Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var User = authState.User;
+
+        if (User.Identity.IsAuthenticated)
+        {
+
+
+
+            CurrentUser = await _users.FindByNameAsync(User.Identity.Name, new System.Threading.CancellationToken());
+            CurrentUser.IsAuthenticated = User.Identity.IsAuthenticated;
+
+
+        }
+        else
+        {
+            var _test = "The user is NOT authenticated.";
+        }
+    }
+
+}
